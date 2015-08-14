@@ -18,5 +18,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^$', 'core.views.index', name='index'),
+    url(r'^hackdash/(?P<project>\w+)$', 'hackdash.views.projects', name='projects'),
     url(r'^admin/', include(admin.site.urls)),
 ]
