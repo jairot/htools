@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^$', 'core.views.index', name='index'),
     url(r'^timeleft/', 'core.views.tleft', name='tleft'),
     url(r'^hackdash/(?P<project>\w+)$', 'hackdash.views.projects', name='projects'),
+    url(r'^timer/', include('timer.urls')),
     url(r'^admin/', include(admin.site.urls)),
 ]
