@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'core',
     'hackdash',
     'timer',
+    'twitter_api',
 )
 
 MIDDLEWARE_CLASSES = (
