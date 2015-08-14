@@ -16,11 +16,11 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-m os.path import join, abspath, dirname
+from os.path import join, abspath, dirname
 
 here = lambda *x: join(abspath(dirname(__file__)), *x)
 
-PROJECT_ROOT = here("../..")
+PROJECT_ROOT = here("../")
 
 root = lambda *x: join(abspath(PROJECT_ROOT), *x)
 
