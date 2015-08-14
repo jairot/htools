@@ -16,6 +16,14 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+from os.path import join, abspath, dirname
+
+here = lambda *x: join(abspath(dirname(__file__)), *x)
+
+PROJECT_ROOT = here("../")
+
+root = lambda *x: join(abspath(PROJECT_ROOT), *x)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
@@ -58,7 +66,7 @@ ROOT_URLCONF = 'htools.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [root("templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -103,3 +111,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = root("static")
+STATICFILES_DIRS = (
+    root("assets"),
+)
