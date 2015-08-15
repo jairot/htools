@@ -78,7 +78,7 @@
                 if (self.currentTime < 0) self.currentTime = 0;
             },
             this.timerComplete = function() {
-                alert('Se pudrió la momia.');
+                //alert('Se pudrió la momia.');
             },
             this.askTime = function() {
                 // Ajax que pregunta el tiempo
@@ -138,11 +138,42 @@
                 $temp.fadeIn(500);
             }, timeout);
         }
+
+        $.fn.cycle.transitions.rotate = function($cont, $slides, opts) {
+            var $el = $($slides[0]);
+            var w = $el.width();
+            var h = $el.height();
+            opts.cssBefore = { top: 0, left: w, width: h, height: h, zIndex: 1 };
+            opts.animIn    = { width: w, height: 0 };
+            opts.animOut   = { top: 0, left: w, width: w, height: h };
+            opts.cssAfter  = { zIndex: 0 };
+        };
     </script>
+{#
+off
+
+  position: absolute;
+  top: 0px;
+  left: 202px;
+  display: none;
+  z-index: 9;
+  opacity: 1;
+  width: 200px;
+  height: 200px;
+
+on
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: block;
+  z-index: 10;
+  opacity: 1;
+  width: 200px;
+  height: 200px; #}
     <script type="text/javascript">
     $(function () {
         $('#desk').cycle({
-            fx:    'scrollRight',
+            fx:    'rotate',
             delay: -1000
         });
 
