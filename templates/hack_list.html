@@ -10,9 +10,25 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Fecha de inicio</th>
+                    <th>Fecha de finalización</th>
+                    <th>Hashtag</th>
                     <th></th>
                 </tr>
             </thead>
+            <tbody>
+                {% for hack in hack_list %}
+                    <tr>
+                        <td>{{ hack.nombre }}</td>
+                        <td>{{ hack.hora_inicio }}</td>
+                        <td>{{ hack.hora_final }}</td>
+                        <td>{{ hack.tw_hashtag }}</td>
+                        <td>
+                            <a class="btn btn-primary" href="{% url 'hackaton' {{ project }} %}">Empezar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
         </table>
 
     </div>
