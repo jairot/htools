@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <header class="navbar navbar-static-top bs-docs-nav" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">HackTools!</a>
+        </div>
+        <nav id="bs-navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="{% url 'hack_list' %}">Mis Hackatones</a>
+            </li>
+            <li>
+              <a href="{% url 'hack_new' %}">Crear Hackaton</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{% url 'django.contrib.auth.views.logout' %}">Cerrar Sesión</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="container">
+        {% block index_body %}
+        {% endblock %}
+    </div>
+{% endblock %}

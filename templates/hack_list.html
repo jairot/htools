@@ -1,36 +1,29 @@
-{% extends "base.html" %}
-{% load staticfiles %}
+{% extends "base_hack.html" %}
 
-{% block content %}
-
-    <div class="container" id="desk">
-
-        <table class="table">
-            <thead>
+{% block index_body %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Fecha de inicio</th>
+                <th>Fecha de finalización</th>
+                <th>Hashtag</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hack in hack_list %}
                 <tr>
-                    <th>Nombre</th>
-                    <th>Fecha de inicio</th>
-                    <th>Fecha de finalización</th>
-                    <th>Hashtag</th>
-                    <th></th>
+                    <td>{{ hack.nombre }}</td>
+                    <td>{{ hack.hora_inicio }}</td>
+                    <td>{{ hack.hora_final }}</td>
+                    <td>{{ hack.tw_hashtag }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{% url 'hackaton' hack.id %}">Empezar</a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                {% for hack in hack_list %}
-                    <tr>
-                        <td>{{ hack.nombre }}</td>
-                        <td>{{ hack.hora_inicio }}</td>
-                        <td>{{ hack.hora_final }}</td>
-                        <td>{{ hack.tw_hashtag }}</td>
-                        <td>
-                            <a class="btn btn-primary" href="{% url 'hackaton' {{ project }} %}">Empezar</a>
-                        </td>
-                    </tr>
-                {% endfor %}
+            {% endfor %}
 
-            </tbody>
-        </table>
-
-    </div>
-{% endblock %}
+        </tbody>
+    </table>
 {% endblock %}

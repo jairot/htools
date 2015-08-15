@@ -1,24 +1,31 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+{% block extra_head %}
+    <link href="{% static 'css/pages.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'css/animations.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'css/style.css' %}" rel='stylesheet' type='text/css'/>
+{% endblock %}
+
 {% block content %}
 
-    <div class="container" id="desk">
+    <input type="hidden" name="ultimoTweet" id="ultimoTweet" value="0">
+    <input type="hidden" id="trans-interval" value="{{ project.page_time }}">
+    <input type="hidden" id="tweet-interval" value="{{ project.tw_time }}">
+    <input type="hidden" id="hackdash-name" value="{{ project.nombre_hackdash }}">
 
-        <div class="desk" id="deskTweets">
-            <button class="btn btn-danger" id="detenerTweets">Pausar</button>
-            <input type="hidden" name="ultimoTweet" id="ultimoTweet" value="0">
-            <h1>Twitter</h1>
+
+    <div  id="pt-main" class="pt-perspective">
+        <div class="pt-page pt-page-1">
+            <div id="timer-cont">
+                <h1 id="timer"></h1>
+            </div>
         </div>
-        <div class="desk" id="deskHackDash">
-            {# <button class="btn btn-danger" id="deteneHackDash">Pausar</button> #}
+        <div class="pt-page pt-page-2">
             <h1>HackDash</h1>
         </div>
-        <div class="desk" id="deskTimer">
-            <div id="timer-cont">
-                <span id="timer"></span>
-            </div>
-
+        <div class="pt-page pt-page-3">
+            <h1>Twitter</h1>
         </div>
     </div>
 
@@ -42,7 +49,8 @@
 
 {% block extra_body %}
     <script src="{% static 'js/jquery.timer.js' %}"></script>
-    <script src="{% static 'js/jquery.cycle.all.js' %}"></script>
+    <script src="{% static 'js/modernizr.custom.js' %}"></script>
+
 
     <script type="text/javascript">
         String.prototype.linkify_tweet = function() {
@@ -81,8 +89,10 @@
                 //alert('Se pudrió la momia.');
             },
             this.askTime = function() {
+                $.get( "/timer/timeleft/1", function( data ) {
+                    self.currentTime = data;
+                });
                 // Ajax que pregunta el tiempo
-                this.currentTime = 6000;
             },
             this.init = function() {
                 // Ajax que pregunta current time o que saca current time de algún lado.
@@ -91,25 +101,29 @@
             };
         }
 
-        function ParseTweet(evt) {
-            try {
-                var arr = JSON.parse(evt.data);
-                lastTimeout = (arr.length * freq) ;
-                $("ultimoTweet").val(evt.last);
-                var ip;
-                for(ip=0; ip < arr.length; ip+=1) {
-                     try {
-                        var j = JSON.parse(arr[ip]);
-                        console.log(j);
-                        publicador(j, freq * ip);
+        function LoadTweet(evt) {
 
-                    } catch (e){
-                        console.log(e);
-                    }
-               }
-            } catch(e) {
-                console.log(e);
-            }
+            $.get( "/timer/timeleft/1", function( data ) {
+                try {
+                    var arr = JSON.parse(data);
+                    lastTimeout = (arr.length * freq) ;
+                    $("ultimoTweet").val(evt.last);
+                    var ip;
+                    for(ip=0; ip < arr.length; ip+=1) {
+                         try {
+                            var j = JSON.parse(arr[ip]);
+                            console.log(j);
+                            publicador(j, freq * ip);
+
+                        } catch (e){
+                            console.log(e);
+                        }
+                   }
+                } catch(e) {
+                    console.log(e);
+                }
+            });
+
         };
 
         function publicador(json, timeout) {
@@ -133,52 +147,18 @@
                         $temp.find(".url-media").html("<img class='img-responsive img-rounded' src='" + json["media"][0]["media_url"] + "' />");
                 } catch (e){}
                 $temp.hide();
-                //console.log("Time ->" + timeout);
                 $("#tweets").prepend($temp);
                 $temp.fadeIn(500);
             }, timeout);
         }
 
-        $.fn.cycle.transitions.rotate = function($cont, $slides, opts) {
-            var $el = $($slides[0]);
-            var w = $el.width();
-            var h = $el.height();
-            opts.cssBefore = { top: 0, left: w, width: h, height: h, zIndex: 1 };
-            opts.animIn    = { width: w, height: 0 };
-            opts.animOut   = { top: 0, left: w, width: w, height: h };
-            opts.cssAfter  = { zIndex: 0 };
-        };
+		$.timer(LoadTweet, $('#tweet-interval').val(), true)
+
+        var hack = new HackTimer();
+        hack.init();
+
     </script>
-{#
-off
 
-  position: absolute;
-  top: 0px;
-  left: 202px;
-  display: none;
-  z-index: 9;
-  opacity: 1;
-  width: 200px;
-  height: 200px;
+    <script src="{% static 'js/pagetransition.js' %}"></script>
 
-on
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  display: block;
-  z-index: 10;
-  opacity: 1;
-  width: 200px;
-  height: 200px; #}
-    <script type="text/javascript">
-    $(function () {
-        $('#desk').cycle({
-            fx:    'rotate',
-            delay: -1000
-        });
-
-        var hack_timer = new HackTimer()
-        hack_timer.init();
-    })
-    </script>
 {% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base_hack.html" %}
+{% load crispy_forms_tags %}
+
+{% block index_body %}
+    <form action="" method="post">{% csrf_token %}
+        {% crispy form %}
+    </form>
+{% endblock %}

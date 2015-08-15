@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from core.views import HackList
+from core.views import HackList, HackCreate
 
 urlpatterns = [
-    url(r'^(?P<project>\w+)/?$', HackList.as_view(), name='index'),
-    url(r'^hackaton/(?P<project>\w+)/?$', 'core.views.index', name='hackaton'),
+    url(r'^/?', include('core.urls')),
     url(r'^hackdash/(?P<project>\w+)/?$', 'hackdash.views.projects', name='projects'),
     url(r'^timer/', include('timer.urls')),
-    url(r'^admin/?', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^', include('django.contrib.auth.urls')),
 ]
